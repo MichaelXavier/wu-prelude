@@ -161,33 +161,60 @@ describe("wu prelude extensions", function() {
     });
   });
 
-  xdescribe("isInfinite", function() {
+  describe("isInfinite", function() {
     it("returns true if the argument is Infinity", function() {
-      expect(_.isInfinite(Infinity)).toEqual(true);
+      expect(wu.isInfinite(Infinity)).toEqual(true);
     });
 
     it("returns false if the argument is not Infinity", function() {
-      expect(_.isInfinite(3)).toEqual(false);
+      expect(wu.isInfinite(3)).toEqual(false);
     });
   });
 
-  xdescribe("const", function() {
+  describe("cnst", function() {
     it("returns a function that always returns the same result", function() {
-      var c = _.const(10);
+      var c = wu.cnst(10);
       expect(c('foo', 'bar')).toEqual(10);
     });
   });
 
-  xdescribe(".", function() {
-    it("composes functions", function() {
-      var fn = _['.'](_.negate, _.floor);
-      expect(fn(3.5)).toEqual(-3);
-    });
-  });
+  describe('plusplus', function() {
+    describe("arrays", function() {
+      beforeEach(function() {
+        this.arg1 = [1,2];
+        this.arg2 = [3,4];
+      });
 
-  xdescribe('++', function() {
-    it("concatenates arrays", function() {
-      expect(_['++']([1,2], [3,4])).toEqual([1,2,3,4]);
+      it("concatenates", function() {
+        expect(wu.plusplus(this.arg1, this.arg2)).toEqual([1,2,3,4]);
+      });
+
+      it("does not modify the original array", function() {
+        wu.plusplus(this.arg1, this.arg2);
+        expect(this.arg1).toEqual([1,2]);
+        expect(this.arg2).toEqual([3,4]);
+      });
+    });
+    
+    describe("strings", function() {
+      beforeEach(function() {
+        this.arg1 = "one";
+        this.arg2 = "two";
+      });
+
+      it("concatenates", function() {
+        expect(wu.plusplus(this.arg1, this.arg2)).toEqual("onetwo");
+      });
+
+      it("does not modify the original string", function() {
+        wu.plusplus(this.arg1, this.arg2);
+        expect(this.arg1).toEqual("one");
+        expect(this.arg2).toEqual("two");
+      });
+    });
+
+    it("throws on invalid arguments", function() {
+      expect(function() { wu.plusplus(10, 20); }).toFailMatch();
     });
   });
 

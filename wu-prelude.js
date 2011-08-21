@@ -50,4 +50,16 @@
   wu.pi = function() {
     return Math.PI;
   };
+
+  wu.isInfinite = wu.match([Infinity], true,
+                           [wu.___], false);
+
+  wu.cnst = function(x) {
+    return function(_) { return x; };
+  };
+
+  function _concat(x, y) { return x.concat(y); }
+
+  wu.plusplus = wu.match([Array, Array], _concat,
+                         [String, String], _concat);
 })();
